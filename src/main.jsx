@@ -11,11 +11,17 @@ import SignIn from "./components/SignIn.jsx";
 import AuthProvider from "./components/providers/AuthProvider.jsx";
 import Users from "./components/Users.jsx";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const router = createBrowserRouter([
    {
       path: "/",
       element: <App></App>,
-      loader: () => fetch(`${process.env.APP_API_URL}/coffee`),
+      loader: async () => {
+         const res = await fetch(`${API_URL}/coffee`);
+         const data = await res.json();
+         return data;
+      },
    },
    {
       path: "addCoffee",
@@ -24,7 +30,7 @@ const router = createBrowserRouter([
    {
       path: "updateCoffee/:id",
       element: <UpdateCoffee></UpdateCoffee>,
-      loader: ({ params }) => fetch(`http://localhost:5000/coffee/${params.id}`),
+      loader: ({ params }) => fetch(`${API_URL}/coffee/${params.id}`),
    },
    {
       path: "/signUp",
@@ -37,7 +43,7 @@ const router = createBrowserRouter([
    {
       path: "/users",
       element: <Users></Users>,
-      loader: () => fetch("http://localhost:5000/user"),
+      loader: () => fetch(`${API_URL}/user`),
    },
 ]);
 
